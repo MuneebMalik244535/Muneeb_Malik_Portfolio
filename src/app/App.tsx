@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useInView } from "motion/react";
 import {
   Github, Linkedin, Mail, ExternalLink, X, ChevronLeft, ChevronRight,
   Download, ArrowRight, Terminal, Cpu, Globe, Zap, MessageSquare,
-  Code2, Server, BrainCircuit, Menu
+  Code2, Server, BrainCircuit, Menu, Copy, Check
 } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -520,7 +520,7 @@ function FloatingAIOrb() {
   );
 }
 
-function Hero() {
+function Hero({ onEmailClick }: { onEmailClick: () => void }) {
   const sectionRef = useRef<HTMLDivElement>(null);
   const orbRef = useRef<HTMLDivElement>(null);
 
@@ -615,16 +615,17 @@ function Hero() {
             className="flex items-center gap-4"
           >
             {[
-              { icon: Github, href: "https://github.com", label: "GitHub" },
-              { icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-              { icon: Mail, href: "mailto:muneeb@example.com", label: "Email" },
-            ].map(({ icon: Icon, href, label }) => (
+              { icon: Github, href: "https://github.com/MuneebMalik244535", label: "GitHub" },
+              { icon: Linkedin, href: "https://www.linkedin.com/in/muneeb-malik-m-1727942b7/", label: "LinkedIn" },
+              { icon: Mail, href: "#", label: "Email", onClick: (e: React.MouseEvent) => { e.preventDefault(); onEmailClick(); } },
+            ].map(({ icon: Icon, href, label, onClick }) => (
               <a
                 key={label}
                 href={href}
-                target="_blank"
+                onClick={onClick}
+                target={onClick ? undefined : "_blank"}
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-white/40 hover:text-white/80 transition-colors duration-200 text-sm"
+                className="flex items-center gap-2 text-white/40 hover:text-white/80 transition-colors duration-200 text-sm cursor-pointer"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 <Icon size={18} />
@@ -1197,7 +1198,7 @@ function Testimonials() {
 
 // ─── Contact ──────────────────────────────────────────────────────────────────
 
-function Contact() {
+function Contact({ onEmailClick }: { onEmailClick: () => void }) {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
 
@@ -1225,16 +1226,17 @@ function Contact() {
 
             <div className="space-y-4">
               {[
-                { icon: Mail, label: "muneeb@example.com", href: "mailto:muneeb@example.com" },
-                { icon: Github, label: "github.com/muneebmalik", href: "https://github.com" },
-                { icon: Linkedin, label: "linkedin.com/in/muneebmalik", href: "https://linkedin.com" },
-              ].map(({ icon: Icon, label, href }) => (
+                { icon: Mail, label: "muneeb244535@gmail.com", href: "#", onClick: (e: React.MouseEvent) => { e.preventDefault(); onEmailClick(); } },
+                { icon: Github, label: "github.com/MuneebMalik244535", href: "https://github.com/MuneebMalik244535" },
+                { icon: Linkedin, label: "linkedin.com/in/muneeb-malik-m-1727942b7", href: "https://www.linkedin.com/in/muneeb-malik-m-1727942b7/" },
+              ].map(({ icon: Icon, label, href, onClick }) => (
                 <a
                   key={label}
                   href={href}
-                  target="_blank"
+                  onClick={onClick}
+                  target={onClick ? undefined : "_blank"}
                   rel="noopener noreferrer"
-                  className="flex items-center gap-3 text-white/50 hover:text-violet-400 transition-colors duration-200 group"
+                  className="flex items-center gap-3 text-white/50 hover:text-violet-400 transition-colors duration-200 group cursor-pointer"
                 >
                   <div className="w-9 h-9 rounded-lg border border-white/8 group-hover:border-violet-500/30 flex items-center justify-center transition-colors duration-200">
                     <Icon size={16} />
@@ -1367,10 +1369,136 @@ function Particles() {
   );
 }
 
+// ─── Contact Modal ────────────────────────────────────────────────────────────
+
+interface ContactModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+function ContactModal({ isOpen, onClose }: ContactModalProps) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText("muneeb244535@gmail.com");
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+          />
+
+          {/* Modal Container */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 20 }}
+            transition={{ type: "spring", duration: 0.5 }}
+            className="relative bg-zinc-950/90 border border-white/10 rounded-2xl p-6 max-w-sm w-full shadow-[0_0_50px_rgba(124,58,237,0.15)] overflow-hidden"
+          >
+            {/* Ambient background glow */}
+            <div className="absolute -top-12 -right-12 w-32 h-32 bg-violet-600/10 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-12 -left-12 w-32 h-32 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none" />
+
+            {/* Header */}
+            <div className="flex items-center justify-between mb-6 relative z-10">
+              <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }} className="text-xl font-bold text-white tracking-tight">
+                Quick Connect
+              </h3>
+              <button
+                onClick={onClose}
+                className="w-8 h-8 rounded-full border border-white/10 hover:border-white/20 flex items-center justify-center text-white/50 hover:text-white transition-colors duration-200"
+              >
+                <X size={16} />
+              </button>
+            </div>
+
+            {/* Content cards */}
+            <div className="space-y-4 relative z-10">
+              {/* Email Options Card */}
+              <div className="bg-white/[0.02] border border-white/5 rounded-xl p-4 transition-all duration-300 hover:border-violet-500/20">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-lg bg-violet-500/10 flex items-center justify-center text-violet-400">
+                    <Mail size={16} />
+                  </div>
+                  <div>
+                    <p style={{ fontFamily: "'Inter', sans-serif" }} className="text-xs text-white/40 font-medium">Email Address</p>
+                    <p style={{ fontFamily: "'Inter', sans-serif" }} className="text-sm font-semibold text-white">muneeb244535@gmail.com</p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-2">
+                  <button
+                    onClick={handleCopyEmail}
+                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-white/5 hover:bg-white/10 border border-white/5 text-white/80 hover:text-white text-xs font-medium transition-colors duration-200"
+                  >
+                    {copied ? (
+                      <>
+                        <Check size={14} className="text-emerald-400" />
+                        <span className="text-emerald-400">Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy size={14} />
+                        <span>Copy Email</span>
+                      </>
+                    )}
+                  </button>
+                  <a
+                    href="mailto:muneeb244535@gmail.com"
+                    className="flex-1 flex items-center justify-center gap-2 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-xs font-medium transition-colors duration-200"
+                  >
+                    <ExternalLink size={14} />
+                    <span>Send Mail</span>
+                  </a>
+                </div>
+              </div>
+
+              {/* WhatsApp Card */}
+              <div className="bg-white/[0.02] border border-white/5 rounded-xl p-4 transition-all duration-300 hover:border-emerald-500/20">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                    <MessageSquare size={16} />
+                  </div>
+                  <div>
+                    <p style={{ fontFamily: "'Inter', sans-serif" }} className="text-xs text-white/40 font-medium">WhatsApp</p>
+                    <p style={{ fontFamily: "'Inter', sans-serif" }} className="text-sm font-semibold text-white">+92 341 2503538</p>
+                  </div>
+                </div>
+
+                <a
+                  href="https://wa.me/923412503538"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-medium transition-colors duration-200"
+                >
+                  <ExternalLink size={14} />
+                  <span>Start Chat</span>
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
+    </AnimatePresence>
+  );
+}
+
 // ─── App ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
   const [loaded, setLoaded] = useState(false);
+  const [contactModalOpen, setContactModalOpen] = useState(false);
 
   return (
     <div className="bg-[#050505] min-h-screen" style={{ fontFamily: "'Inter', sans-serif", cursor: "none" }}>
@@ -1397,16 +1525,17 @@ export default function App() {
           <Particles />
           <Navbar />
           <main className="relative z-10">
-            <Hero />
+            <Hero onEmailClick={() => setContactModalOpen(true)} />
             <Projects />
             <SkillsOrbit />
             <Experience />
             <Services />
             <TechMarquee />
             <Testimonials />
-            <Contact />
+            <Contact onEmailClick={() => setContactModalOpen(true)} />
           </main>
           <Footer />
+          <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
         </>
       )}
     </div>
