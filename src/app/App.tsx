@@ -3,7 +3,7 @@ import { motion, AnimatePresence, useInView } from "motion/react";
 import {
   Github, Linkedin, Mail, ExternalLink, X, ChevronLeft, ChevronRight,
   Download, ArrowRight, Terminal, Cpu, Globe, Zap, MessageSquare,
-  Code2, Server, BrainCircuit, Menu, Copy, Check
+  Code2, Server, BrainCircuit, Menu, Copy, Check, Play, Pause, Volume2, VolumeX, Tv
 } from "lucide-react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -20,6 +20,7 @@ interface Project {
   overview: string;
   challenges: string;
   architecture: string;
+  videoUrl?: string;
 }
 
 interface Experience {
@@ -35,16 +36,17 @@ interface Experience {
 const projects: Project[] = [
   {
     id: 1,
-    title: "AI Customer Support Agent",
-    description: "Autonomous multi-tier support agent that handles tickets end-to-end — triage, resolution, escalation — with zero human intervention for 78% of incoming requests.",
-    tech: ["Python", "OpenAI SDK", "FastAPI", "Redis", "Twilio"],
+    title: "AI Dental Clinic Assistant",
+    description: "Autonomous patient care agent that handles appointment scheduling, FAQ answering, and dental software synchronization over phone and web chat.",
+    tech: ["Python", "FastAPI", "Twilio API", "OpenAI GPT-4o", "PostgreSQL"],
     color: "#7C3AED",
-    image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=900&h=600&fit=crop&auto=format",
-    github: "https://github.com",
+    image: "https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=900&h=600&fit=crop&auto=format",
+    github: "https://github.com/MuneebMalik244535",
     demo: "https://demo.example.com",
-    overview: "A production-grade autonomous support system using the OpenAI Agents SDK. It ingests tickets from email, chat, and API webhooks, classifies intent, retrieves knowledge base context, and resolves or escalates with full audit trails.",
-    challenges: "Achieving consistent resolution quality across ambiguous tickets required a confidence-gated escalation layer and a fine-tuned intent classifier trained on 50k historical tickets.",
-    architecture: "FastAPI orchestrator → intent classifier → RAG retrieval → resolution agent → audit logger. Redis pub/sub handles real-time ticket status updates to the dashboard."
+    overview: "An automated voice and chat assistant designed for dental clinics. It integrates with Twilio for inbound/outbound calls and SMS, handles patient queries with a HIPAA-compliant context store, and automates appointment bookings in the clinic calendar.",
+    challenges: "Handling messy natural language schedules (e.g. 'next Tuesday afternoon or maybe Thursday morning') and ensuring real-time slot checking without double booking, solved via constrained LLM output parsing and pessimistic slot locking.",
+    architecture: "Twilio webhook stream → Voice/Chat Orchestrator → RAG dental information agent → Calendar booking agent → SMS notification client. PostgreSQL holds local database cache.",
+    videoUrl: "/videos/dental_clinic.mp4"
   },
   {
     id: 2,
@@ -53,7 +55,7 @@ const projects: Project[] = [
     tech: ["TypeScript", "MCP Protocol", "Node.js", "Zod", "SSE"],
     color: "#0EA5E9",
     image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&h=600&fit=crop&auto=format",
-    github: "https://github.com",
+    github: "https://github.com/MuneebMalik244535",
     demo: "https://demo.example.com",
     overview: "An MCP-compliant server that gives Claude, Cursor, and other LLM tools full programmatic access to the local or remote filesystem via a clean, schema-validated tool surface with permission scoping.",
     challenges: "Preventing path traversal and permission escalation while keeping the tool surface ergonomic required a capability-based access model with per-session sandboxing.",
@@ -66,11 +68,12 @@ const projects: Project[] = [
     tech: ["Python", "LangGraph", "Tavily API", "OpenAI", "FastAPI"],
     color: "#059669",
     image: "https://images.unsplash.com/photo-1677442135703-1787eea5ce01?w=900&h=600&fit=crop&auto=format",
-    github: "https://github.com",
+    github: "https://github.com/MuneebMalik244535",
     demo: "https://demo.example.com",
     overview: "A LangGraph-powered multi-agent research pipeline with four specialized agents: Planner decomposes research questions, Searcher retrieves 40+ sources in parallel, Analyst extracts insights, and Writer synthesizes the final report.",
     challenges: "Coordinating parallel web searches without rate-limiting and merging contradictory sources required a consensus layer where the Analyst reconciles conflicting claims with source weighting.",
-    architecture: "LangGraph stateful graph with conditional edges handles agent routing. Tavily provides deep web search. All agent state persists to PostgreSQL for resumable long-running sessions."
+    architecture: "LangGraph stateful graph with conditional edges handles agent routing. Tavily provides deep web search. All agent state persists to PostgreSQL for resumable long-running sessions.",
+    videoUrl: "/videos/multi-agent.mp4"
   },
   {
     id: 4,
@@ -79,11 +82,12 @@ const projects: Project[] = [
     tech: ["Python", "OpenAI", "LangChain", "PostgreSQL", "Celery"],
     color: "#F59E0B",
     image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=900&h=600&fit=crop&auto=format",
-    github: "https://github.com",
+    github: "https://github.com/MuneebMalik244535",
     demo: "https://demo.example.com",
     overview: "Fully automated resume screening pipeline that ingests PDFs, extracts structured candidate profiles using GPT-4o with function calling, scores against configurable rubrics, and produces ranked shortlists with explanations.",
     challenges: "Eliminating demographic bias while maintaining ranking accuracy required careful prompt engineering with blind scoring (name/gender/location removed before evaluation) and fairness auditing.",
-    architecture: "Celery workers handle batch PDF parsing. GPT-4o with structured outputs extracts candidate fields. A PostgreSQL scoring store tracks evaluations with full explainability logs."
+    architecture: "Celery workers handle batch PDF parsing. GPT-4o with structured outputs extracts candidate fields. A PostgreSQL scoring store tracks evaluations with full explainability logs.",
+    videoUrl: "/videos/resume-analyzer.mp4"
   },
   {
     id: 5,
@@ -92,11 +96,12 @@ const projects: Project[] = [
     tech: ["Python", "OpenAI", "Playwright", "HubSpot API", "Zapier"],
     color: "#EF4444",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&h=600&fit=crop&auto=format",
-    github: "https://github.com",
+    github: "https://github.com/MuneebMalik244535",
     demo: "https://demo.example.com",
     overview: "An autonomous sales pipeline that scrapes and enriches leads from LinkedIn and company websites, generates context-aware cold outreach, handles follow-up sequences, and pushes all activity to HubSpot CRM via webhooks.",
     challenges: "Avoiding spam filters while maintaining personalization at scale required domain-specific prompt fine-tuning, rate-limited sending schedules, and DKIM/SPF-aware reply detection.",
-    architecture: "Playwright browser agents handle web research. OpenAI generates personalized multi-touch sequences. Zapier webhooks trigger CRM record creation and deal stage updates bidirectionally."
+    architecture: "Playwright browser agents handle web research. OpenAI generates personalized multi-touch sequences. Zapier webhooks trigger CRM record creation and deal stage updates bidirectionally.",
+    videoUrl: "/videos/lead-generator.mp4"
   },
   {
     id: 6,
@@ -105,11 +110,54 @@ const projects: Project[] = [
     tech: ["Python", "LangGraph", "Pinecone", "FastAPI", "LangSmith"],
     color: "#8B5CF6",
     image: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=900&h=600&fit=crop&auto=format",
-    github: "https://github.com",
+    github: "https://github.com/MuneebMalik244535",
     demo: "https://demo.example.com",
     overview: "A sophisticated RAG pipeline using LangGraph's stateful graph to route queries through adaptive retrieval strategies, self-reflection nodes, and grounded generation with inline citation tracking and answer confidence scoring.",
     challenges: "Reducing hallucination below 2% required a dual-path verification system: a judge model checks factual consistency against retrieved chunks before the final response is returned.",
-    architecture: "LangGraph conditional edges drive query routing. Pinecone handles hybrid vector + keyword search. LangSmith provides full trace observability and automated evaluation harnesses."
+    architecture: "LangGraph conditional edges drive query routing. Pinecone handles hybrid vector + keyword search. LangSmith provides full trace observability and automated evaluation harnesses.",
+    videoUrl: "/videos/NLP.mp4"
+  },
+  {
+    id: 7,
+    title: "AI Travel Planner",
+    description: "An intelligent travel assistant that designs personalized day-by-day itineraries, suggestions, and routes based on budget and interests.",
+    tech: ["Next.js", "FastAPI", "OpenAI", "Tavily API", "Tailwind CSS"],
+    color: "#06B6D4",
+    image: "https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=900&h=600&fit=crop&auto=format",
+    github: "https://github.com/MuneebMalik244535",
+    demo: "https://demo.example.com",
+    overview: "A full-stack travel planner powered by GPT-4o and Tavily API. Users input their destination, trip duration, budget, and interests, and the system generates a dynamic daily itinerary with mapped routes, weather alerts, and restaurant recommendations.",
+    challenges: "Reconciling conflicting travel times and mapping a logical route between multiple points of interest. Solved by integrating a geographic clustering algorithm and prompting the model to sequence locations by distance.",
+    architecture: "Next.js Frontend → FastAPI Orchestrator → LLM Itinerary Planner → Tavily Search API for real-time recommendations → OpenWeatherMap API for weather data.",
+    videoUrl: "/videos/ai-travel.mp4"
+  },
+  {
+    id: 8,
+    title: "Enterprise AI Chatbot",
+    description: "A scalable, production-ready conversational assistant that answers customer support questions using company documentation with custom styling.",
+    tech: ["React", "Node.js", "LangChain", "Pinecone", "Socket.io"],
+    color: "#10B981",
+    image: "https://images.unsplash.com/photo-1531746790731-6c087fecd65a?w=900&h=600&fit=crop&auto=format",
+    github: "https://github.com/MuneebMalik244535",
+    demo: "https://demo.example.com",
+    overview: "An enterprise-grade customer chatbot that uses WebSockets for real-time chat. It queries private corporate documents stored in Pinecone to deliver citation-backed answers while maintaining security guidelines.",
+    challenges: "Managing user session memory across multiple server instances. Solved by using Redis to store conversational history and feeding the summarized context into each LLM query.",
+    architecture: "React Chat Widget → Node.js Gateway (Socket.io) → LangChain Memory Router → OpenAI API (GPT-4o) + Pinecone vector index.",
+    videoUrl: "/videos/chatbot.mp4"
+  },
+  {
+    id: 9,
+    title: "AI Resume Data Extractor",
+    description: "A batch processing tool that extracts structured JSON data from unstructured PDF resumes with high accuracy.",
+    tech: ["Python", "PyMuPDF", "OpenAI Structured Outputs", "FastAPI", "MongoDB"],
+    color: "#F97316",
+    image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?w=900&h=600&fit=crop&auto=format",
+    github: "https://github.com/MuneebMalik244535",
+    demo: "https://demo.example.com",
+    overview: "A high-performance pipeline designed to parse hundreds of resume PDFs in parallel. It uses advanced PDF text-extraction techniques to retrieve raw layout text, and passes it to GPT-4o-mini using JSON schema-validation to structure work history, skills, and education.",
+    challenges: "Handling multi-column resume layouts which typically read in scrambled order in raw PDF text. Solved by implementing PyMuPDF block coordinate sorting to read columns chronologically.",
+    architecture: "FastAPI endpoint → PyMuPDF parser → coordinate sorter → OpenAI client (Structured Outputs) → MongoDB repository.",
+    videoUrl: "/videos/resume_data_extractor.mp4"
   },
 ];
 
@@ -724,12 +772,25 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
           onClick={(e) => e.stopPropagation()}
           className="bg-[#0f0f10] border border-white/8 rounded-3xl w-full max-w-3xl max-h-[90vh] overflow-y-auto"
         >
-          <div className="relative h-56 overflow-hidden rounded-t-3xl">
-            <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0f0f10] to-transparent" />
+          <div className="relative h-64 md:h-80 overflow-hidden rounded-t-3xl bg-black">
+            {project.videoUrl ? (
+              <video
+                src={project.videoUrl}
+                controls
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="w-full h-full object-contain"
+                style={{ outline: "none" }}
+              />
+            ) : (
+              <img src={project.image} alt={project.title} className="w-full h-full object-cover" />
+            )}
+            <div className="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#0f0f10] to-transparent pointer-events-none" />
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/50 backdrop-blur flex items-center justify-center text-white/70 hover:text-white border border-white/10 transition-colors"
+              className="absolute top-4 right-4 w-8 h-8 rounded-full bg-black/50 backdrop-blur flex items-center justify-center text-white/70 hover:text-white border border-white/10 transition-colors z-10"
             >
               <X size={14} />
             </button>
@@ -871,6 +932,226 @@ function Projects() {
       <AnimatePresence>
         {active && <ProjectModal project={active} onClose={() => setActive(null)} />}
       </AnimatePresence>
+    </Section>
+  );
+}
+
+// ─── Video Theater ────────────────────────────────────────────────────────────
+
+function VideoTheater() {
+  const videoProjects = projects.filter((p) => p.videoUrl);
+  const [selected, setSelected] = useState<Project>(videoProjects[0] || projects[0]);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // Restart video and autoplay when selection changes
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+      videoRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch(() => {
+        setIsPlaying(false);
+      });
+    }
+  }, [selected]);
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (isPlaying) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      videoRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const toggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Avoid triggering play/pause on container click
+    if (!videoRef.current) return;
+    videoRef.current.muted = !isMuted;
+    setIsMuted(!isMuted);
+  };
+
+  return (
+    <Section id="theater" className="py-32 px-6 border-t border-white/5 bg-[#070708] relative overflow-hidden">
+      {/* Background radial glow */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full blur-[160px] opacity-15 pointer-events-none transition-all duration-1000"
+        style={{
+          background: `radial-gradient(circle, ${selected.color} 0%, transparent 70%)`
+        }}
+      />
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <SectionLabel>Live Execution</SectionLabel>
+          <SectionHeading>AI Agent Demo Theater</SectionHeading>
+          <p style={{ fontFamily: "'Inter', sans-serif" }} className="text-white/40 mt-4 text-sm max-w-xl mx-auto">
+            Watch real-time recordings of our advanced AI agents solving real-world business problems.
+          </p>
+        </div>
+
+        <div className="grid lg:grid-cols-12 gap-10 items-stretch">
+          {/* Left Column: Video Screen (8 cols) */}
+          <div className="lg:col-span-8 flex flex-col justify-between">
+            {/* Screen Container */}
+            <div 
+              className="relative w-full rounded-2xl overflow-hidden border border-white/10 bg-black group transition-shadow duration-500 cursor-pointer"
+              style={{
+                boxShadow: `0 0 50px -10px ${selected.color}30`
+              }}
+              onClick={togglePlay}
+            >
+              {/* HTML5 Video */}
+              <video
+                ref={videoRef}
+                src={selected.videoUrl}
+                loop
+                muted={isMuted}
+                playsInline
+                className="w-full aspect-video object-contain"
+              />
+
+              {/* Theater Ambient Light Bar */}
+              <div 
+                className="absolute top-0 inset-x-0 h-1 opacity-80 blur-[2px] transition-colors duration-1000"
+                style={{ backgroundColor: selected.color }}
+              />
+
+              {/* Custom Playback Controls Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4 pointer-events-none">
+                <div className="flex justify-between items-center w-full">
+                  <span style={{ fontFamily: "'Geist Mono', monospace" }} className="px-3 py-1 rounded bg-black/60 border border-white/10 text-xs text-white/90">
+                    Live Demo
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between w-full pointer-events-auto">
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={(e) => { e.stopPropagation(); togglePlay(); }}
+                      className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all cursor-pointer"
+                    >
+                      {isPlaying ? <Pause size={16} /> : <Play size={16} className="ml-0.5" />}
+                    </button>
+                    <button
+                      onClick={toggleMute}
+                      className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 flex items-center justify-center text-white transition-all cursor-pointer"
+                    >
+                      {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                    </button>
+                  </div>
+
+                  <span style={{ fontFamily: "'Geist Mono', monospace" }} className="text-[10px] text-white/40 tracking-wider">
+                    {selected.title.toUpperCase()}
+                  </span>
+                </div>
+              </div>
+
+              {/* Large Center Play Icon when Paused */}
+              {!isPlaying && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 pointer-events-none">
+                  <motion.div 
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    className="w-16 h-16 rounded-full bg-violet-600 border border-violet-500 flex items-center justify-center text-white shadow-2xl"
+                  >
+                    <Play size={24} className="ml-1" />
+                  </motion.div>
+                </div>
+              )}
+            </div>
+
+            {/* Selected Project Info Box */}
+            <div className="mt-6 p-6 rounded-2xl border border-white/8 bg-white/[0.01] backdrop-blur-md">
+              <div className="flex flex-wrap gap-2 mb-3">
+                {selected.tech.map((t) => (
+                  <span key={t} style={{ fontFamily: "'Geist Mono', monospace" }} className="px-2 py-0.5 text-[10px] rounded bg-white/5 text-white/40 border border-white/6">
+                    {t}
+                  </span>
+                ))}
+              </div>
+              <h3 style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }} className="text-2xl font-bold text-white mb-2">
+                {selected.title}
+              </h3>
+              <p style={{ fontFamily: "'Inter', sans-serif" }} className="text-sm text-white/60 leading-relaxed mb-4">
+                {selected.overview}
+              </p>
+              <div className="flex gap-3">
+                <a href={selected.github} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg border border-white/10 text-white/60 hover:text-white hover:border-white/20 text-xs transition-colors cursor-pointer"
+                  style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <Github size={14} /> GitHub Repo
+                </a>
+                <a href={selected.demo} target="_blank" rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-violet-600 hover:bg-violet-500 text-white text-xs font-medium transition-colors cursor-pointer"
+                  style={{ fontFamily: "'Inter', sans-serif" }}>
+                  <ExternalLink size={14} /> Live System
+                </a>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Playlist Selector (4 cols) */}
+          <div className="lg:col-span-4 flex flex-col gap-4">
+            <div className="flex items-center gap-2 mb-2 px-1">
+              <Tv size={16} className="text-violet-400" />
+              <span style={{ fontFamily: "'Geist Mono', monospace" }} className="text-xs text-white/50 tracking-wider uppercase">
+                Demonstration Playlist
+              </span>
+            </div>
+
+            {videoProjects.map((project) => {
+              const isCurrent = selected.id === project.id;
+              return (
+                <button
+                  key={project.id}
+                  onClick={() => setSelected(project)}
+                  className={`w-full text-left p-5 rounded-2xl border transition-all duration-300 flex flex-col gap-3 group relative overflow-hidden cursor-pointer ${
+                    isCurrent 
+                      ? "bg-white/[0.03] border-white/15" 
+                      : "bg-transparent border-white/5 hover:border-white/10 hover:bg-white/[0.01]"
+                  }`}
+                >
+                  {/* Left indicator glow */}
+                  {isCurrent && (
+                    <div 
+                      className="absolute left-0 inset-y-0 w-1 rounded-l-2xl" 
+                      style={{ backgroundColor: project.color }}
+                    />
+                  )}
+
+                  <div className="flex justify-between items-start">
+                    <h4 style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }} className={`font-bold text-base transition-colors ${
+                      isCurrent ? "text-white" : "text-white/60 group-hover:text-white"
+                    }`}>
+                      {project.title}
+                    </h4>
+                    {isCurrent && (
+                      <span className="w-2 h-2 rounded-full animate-ping" style={{ backgroundColor: project.color }} />
+                    )}
+                  </div>
+
+                  <p style={{ fontFamily: "'Inter', sans-serif" }} className="text-xs text-white/40 leading-relaxed line-clamp-2">
+                    {project.description}
+                  </p>
+
+                  <div className="flex flex-wrap gap-1">
+                    {project.tech.slice(0, 3).map((t) => (
+                      <span key={t} style={{ fontFamily: "'Geist Mono', monospace" }} className="px-1.5 py-0.5 text-[9px] rounded bg-white/5 text-white/30 border border-white/5">
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
     </Section>
   );
 }
@@ -1527,6 +1808,7 @@ export default function App() {
           <main className="relative z-10">
             <Hero onEmailClick={() => setContactModalOpen(true)} />
             <Projects />
+            <VideoTheater />
             <SkillsOrbit />
             <Experience />
             <Services />
