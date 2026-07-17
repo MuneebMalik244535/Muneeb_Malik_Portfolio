@@ -5,9 +5,6 @@ import {
   Download, ArrowRight, Terminal, Cpu, Globe, Zap, MessageSquare,
   Code2, Server, BrainCircuit, Menu, Copy, Check, Play, Pause, Volume2, VolumeX, Tv
 } from "lucide-react";
-import { MascotProvider } from "./components/Mascot/MascotContext";
-import { MascotMovement } from "./components/Mascot/MascotMovement";
-import { MascotController } from "./components/Mascot/MascotController";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -734,7 +731,7 @@ function Section({ children, className = "", id }: { children: React.ReactNode; 
       id={id}
       ref={ref}
       initial={{ opacity: 0, y: 40 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
       className={className}
     >
@@ -1353,7 +1350,7 @@ function Experience() {
 
 function Services() {
   return (
-    <Section className="py-32 px-6">
+    <Section id="services" className="py-32 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16">
           <SectionLabel>What I Offer</SectionLabel>
@@ -1422,7 +1419,7 @@ function Testimonials() {
   }, []);
 
   return (
-    <Section className="py-32 px-6">
+    <Section id="testimonials" className="py-32 px-6">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-16">
           <SectionLabel>Social Proof</SectionLabel>
@@ -1774,9 +1771,23 @@ export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [contactModalOpen, setContactModalOpen] = useState(false);
 
+  // Prevent browser from restoring scroll position on refresh
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
+  // Reset scroll to top after loading screen completes
+  useEffect(() => {
+    if (loaded) {
+      window.scrollTo(0, 0);
+    }
+  }, [loaded]);
+
   return (
-    <MascotProvider>
-      <div className="bg-[#050505] min-h-screen" style={{ fontFamily: "'Inter', sans-serif", cursor: "none" }}>
+    <div className="bg-[#050505] min-h-screen" style={{ fontFamily: "'Inter', sans-serif", cursor: "none", minHeight: "100vh" }}>
         <style>{`
           @keyframes marquee {
             from { transform: translateX(0); }
@@ -1815,9 +1826,7 @@ export default function App() {
               <div id="experience">
                 <Experience />
               </div>
-              <div id="services">
-                <Services />
-              </div>
+              <Services />
               <div id="tech">
                 <TechMarquee />
               </div>
@@ -1830,13 +1839,8 @@ export default function App() {
             </main>
             <Footer />
             <ContactModal isOpen={contactModalOpen} onClose={() => setContactModalOpen(false)} />
-            
-            {/* Mascot Companion Components */}
-            <MascotController />
-            <MascotMovement />
           </>
         )}
       </div>
-    </MascotProvider>
   );
 }

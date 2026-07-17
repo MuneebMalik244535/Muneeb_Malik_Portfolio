@@ -77,46 +77,46 @@ export const Mascot: React.FC<MascotProps> = ({ size = 90 }) => {
         .mascot-svg-container svg {
           width: 100%;
           height: 100%;
-          overflow: visible;
+          overflow: hidden;
         }
         .mascot-svg-container #legs {
           transform: translateY(var(--legs-y, 0px)) !important;
-          transform-origin: 512px 750px !important;
+          transform-origin: 50% 73% !important;
         }
         .mascot-svg-container #left_arm {
           transform: rotate(var(--left-arm-rotate, 0deg)) translateY(var(--left-arm-y, 0px)) !important;
-          transform-origin: 350px 540px !important;
+          transform-origin: 34% 53% !important;
         }
         .mascot-svg-container #right_arm {
           transform: rotate(var(--right-arm-rotate, 0deg)) translateY(var(--right-arm-y, 0px)) !important;
-          transform-origin: 674px 540px !important;
+          transform-origin: 66% 53% !important;
         }
         .mascot-svg-container #head {
           transform: rotate(var(--head-rotate, 0deg)) translateY(var(--head-y, 0px)) !important;
-          transform-origin: 512px 330px !important;
+          transform-origin: 50% 32% !important;
         }
         .mascot-svg-container #body {
           transform: scaleY(var(--body-scale-y, 1)) scaleX(var(--body-scale-x, 1)) !important;
-          transform-origin: 512px 550px !important;
+          transform-origin: 50% 54% !important;
         }
         .mascot-svg-container #left_eye {
           transform: translate(var(--left-eye-x, 0px), var(--left-eye-y, 0px)) scaleY(var(--left-eye-scale-y, 1)) !important;
-          transform-origin: 415px 325px !important;
+          transform-origin: 41% 32% !important;
         }
         .mascot-svg-container #right_eye {
           transform: translate(var(--right-eye-x, 0px), var(--right-eye-y, 0px)) scaleY(var(--right-eye-scale-y, 1)) !important;
-          transform-origin: 609px 325px !important;
+          transform-origin: 60% 32% !important;
         }
         .mascot-svg-container #mouth {
           transform: scaleY(var(--mouth-scale-y, 1)) scaleX(var(--mouth-scale-x, 1)) translateY(var(--mouth-y, 0px)) !important;
-          transform-origin: 512px 385px !important;
+          transform-origin: 50% 38% !important;
         }
       `}</style>
 
       {/* Floating container animations */}
       <motion.div
         className="w-full h-full"
-        animate={variants.container.animate}
+        animate={variants.container.animate as any}
         style={{
           width: "100%",
           height: "100%",

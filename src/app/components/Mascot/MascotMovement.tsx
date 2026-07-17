@@ -49,6 +49,8 @@ export const MascotMovement: React.FC = () => {
         left: 0,
         top: 0,
         pointerEvents: "none",
+        width: "10px",
+        height: "10px",
       }}
       animate={
         shouldReduceMotion
@@ -69,7 +71,7 @@ export const MascotMovement: React.FC = () => {
     >
       <div className="relative pointer-events-auto">
         <MascotSpeech />
-        <Mascot size={90} />
+        <Mascot size={10} />
       </div>
     </motion.div>
   );
